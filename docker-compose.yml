@@ -25,8 +25,8 @@ services:
   
   idiamant:
     container_name: idiamant
-    # image: leclubber/idiamant2mqtt
-    build: ./idiamant
+    image: leclubber/idiamant2mqtt
+    # build: ./idiamant
     privileged: true
     restart: always
     environment:
@@ -37,5 +37,4 @@ services:
       - IDIAMANT_PASSWORD=${PASSWORD}
       - IDIAMANT_CLIENT_ID=${CLIENT_ID}
       - IDIAMANT_CLIENT_SECRET=${CLIENT_SECRET}
-      - IDIAMANT_PULL_STATUS=5
 
