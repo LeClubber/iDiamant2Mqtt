@@ -121,6 +121,7 @@ Vous pourrez alors :
 - [x] Documentation
 - [x] Utilisation d'un login/mot de passe pour le broker MQTT
 - [x] Publier image Docker en multiple arch
+- [ ] Renouvellement du token
 - [ ] Attente du serveur MQTT si non disponible
 - [ ] Tester les paramètres et gestion d'erreur
 - [ ] Utilisation de certificat pour le broker MQTT
