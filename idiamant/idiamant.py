@@ -12,7 +12,7 @@ class iDiamant():
 
     access_token = ""
     refresh_token = ""
-    liste_home_id = list()
+    volets = {}
 
     @staticmethod
     def getToken():
@@ -42,7 +42,15 @@ class iDiamant():
         jsonStatus = json.loads(response.text)
         homes = jsonStatus['body']['homes']
         for home in homes:
-            iDiamant.liste_home_id.append(home['id'])
+            home_id = home['id']
+            modules = home['modules']
+            for module in modules:
+                if "NBR" == module['type']:
+                    iDiamant.volets[module['id']] = {
+                        'name':module['name'],
+                        'bridge':module['bridge'],
+                        'id_home':home_id
+                    }
 
 
     @staticmethod
@@ -62,18 +70,10 @@ class iDiamant():
     @staticmethod
     def initDiscovery():
         """ Publication des config pour discovery """
-        for home_id in iDiamant.liste_home_id:
-            url = "https://api.netatmo.com/api/homestatus?home_id=" + home_id
-            headers = {"Authorization": "Bearer " + iDiamant.access_token}
-            response = requests.get(url, headers=headers)
-            jsonStatus = json.loads(response.text)
-            modules = jsonStatus['body']['home']['modules']
-            for module in modules:
-                if "NBR" == module['type']:
-                    id_volet = module['id']
-                    topic = Constantes.mqttTopic + "/cover/" + id_volet + "/config"
-                    payload = '{'
-                    payload += '"command_topic": "' + Constantes.mqttTopic + '/cover/' + id_volet + '/set",'
-                    payload += '"unique_id": "' + id_volet + '"'
-                    payload += '}'
-                    iDiamant.publish(topic, payload)
+        for volet in iDiamant.volets:
+            topic = Constantes.mqttTopic + "/cover/" + volet + "/config"
+            payload = '{'
+            payload += '"unique_id": "' + volet + '",'
+            payload += '"command_topic": "' + Constantes.mqttTopic + '/cover/' + volet + '/set"'
+            payload += '}'
+            iDiamant.publish(topic, payload)
