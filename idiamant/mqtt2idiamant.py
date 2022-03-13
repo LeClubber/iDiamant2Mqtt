@@ -54,7 +54,8 @@ class Mqtt2iDiamant(Thread):
 
         # Appel de l'API
         response = requests.post(url, json=data, headers=headers)
-        print(response)
+        if 200 != response.status_code:
+            print("Erreur : " + response.content)
 
     def run(self):
         """ Démarrage du service MQTT """
