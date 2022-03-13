@@ -12,6 +12,7 @@ class iDiamant():
 
     access_token = ""
     refresh_token = ""
+    expire_token = 0
     volets = {}
 
     @staticmethod
@@ -35,6 +36,7 @@ class iDiamant():
         jsonStatus = json.loads(response.text)
         iDiamant.access_token = jsonStatus['access_token']
         iDiamant.refresh_token = jsonStatus['refresh_token']
+        iDiamant.expire_token = int(jsonStatus['expires_in'])
 
         url = "https://api.netatmo.com/api/homesdata"
         headers = {"Authorization": "Bearer " + iDiamant.access_token}
@@ -56,6 +58,18 @@ class iDiamant():
     @staticmethod
     def updateToken():
         """ Update d'un token en fin de vie """
+        url = "https://api.netatmo.com/oauth2/token"
+        data = {'grant_type': 'refresh_token', 
+            'refresh_token': iDiamant.refresh_token,
+            'client_id': Constantes.idiamantClientId,
+            'client_secret': Constantes.idiamantClientSecret
+        }
+        response = requests.post(url, data)
+        while 200 != response.status_code:
+            attente = 20
+            print("Problème d'accès au renouvellement de token : attente de " + attente + " secondes")
+            sleep(attente)
+            response = requests.post(url, data)
 
     @staticmethod
     def publish(topic, playload, retain=True):
