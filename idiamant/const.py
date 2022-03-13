@@ -16,4 +16,3 @@ class Constantes():
     idiamantPassword = os.getenv("IDIAMANT_PASSWORD")
     idiamantClientId = os.getenv("IDIAMANT_CLIENT_ID")
     idiamantClientSecret = os.getenv("IDIAMANT_CLIENT_SECRET")
-    idiamantPullStatus = int(os.getenv("IDIAMANT_PULL_STATUS", 5))
