@@ -36,8 +36,10 @@ Le service peut être démarré grâce à la commande suivante :
 
 ``` sh
 docker run -d --name idiamant \
-    -e PALAZZETTI_HOST=192.168.1.1 \
-    -e PALAZZETTI_PULL_STATUS=5 \
+    -e IDIAMANT_USER=test@test.com \
+    -e IDIAMANT_PASSWORD=password \
+    -e IDIAMANT_CLIENT_ID=abcde \
+    -e IDIAMANT_CLIENT_SECRET=abcdefgh \
     leclubber/idiamant2mqtt
 ```
 
@@ -46,7 +48,7 @@ Ou en docker-compose (recommandé) :
 ``` yaml
 version: '3'
 services:
-  palazzetti:
+  idiamant:
     container_name: idiamant
     image: leclubber/idiamant2mqtt
     privileged: true
