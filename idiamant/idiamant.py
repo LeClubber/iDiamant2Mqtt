@@ -74,6 +74,7 @@ class iDiamant():
             topic = Constantes.mqttTopic + "/cover/" + volet + "/config"
             payload = '{'
             payload += '"unique_id": "' + volet + '",'
+            payload += '"name": "' + iDiamant.volets[volet]['name'] + '",'
             payload += '"command_topic": "' + Constantes.mqttTopic + '/cover/' + volet + '/set"'
             payload += '}'
             iDiamant.publish(topic, payload)
