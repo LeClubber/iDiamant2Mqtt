@@ -44,15 +44,16 @@ class iDiamant():
         jsonStatus = json.loads(response.text)
         homes = jsonStatus['body']['homes']
         for home in homes:
-            home_id = home['id']
-            modules = home['modules']
-            for module in modules:
-                if "NBR" == module['type']:
-                    iDiamant.volets[module['id']] = {
-                        'name':module['name'],
-                        'bridge':module['bridge'],
-                        'id_home':home_id
-                    }
+            if 'modules' in home:
+                home_id = home['id']
+                modules = home['modules']
+                for module in modules:
+                    if "NBR" == module['type']:
+                        iDiamant.volets[module['id']] = {
+                            'name':module['name'],
+                            'bridge':module['bridge'],
+                            'id_home':home_id
+                        }
 
 
     @staticmethod
