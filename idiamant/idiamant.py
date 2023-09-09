@@ -10,34 +10,14 @@ from time import sleep
 
 class iDiamant():
 
-    access_token = ""
-    refresh_token = ""
-    expire_token = 0
+    access_token = Constantes.idiamantAccessToken
+    refresh_token = Constantes.idiamantRefreshToken
+    expire_token = 120
     volets = {}
 
     @staticmethod
-    def getToken():
-        """ Récupération du token sepuis Netatmo """
-        url = "https://api.netatmo.com/oauth2/token"
-        data = {'grant_type': 'password', 
-            'username': Constantes.idiamantUser,
-            'password': Constantes.idiamantPassword,
-            'client_id': Constantes.idiamantClientId,
-            'client_secret': Constantes.idiamantClientSecret,
-            'scope': 'read_bubendorff write_bubendorff'
-        }
-        response = requests.post(url, data)
-        while 200 != response.status_code:
-            attente = 20
-            print("Problème d'accès au token : attente de " + attente + " secondes")
-            sleep(attente)
-            response = requests.post(url, data)
-            
-        jsonStatus = json.loads(response.text)
-        iDiamant.access_token = jsonStatus['access_token']
-        iDiamant.refresh_token = jsonStatus['refresh_token']
-        iDiamant.expire_token = int(jsonStatus['expires_in'])
-
+    def initDiscovery():
+        """ Récupération de tous les volets depuis l'API Netatmo """
         url = "https://api.netatmo.com/api/homesdata"
         headers = {"Authorization": "Bearer " + iDiamant.access_token}
         response = requests.get(url, headers=headers)
@@ -55,7 +35,6 @@ class iDiamant():
                             'id_home':home_id
                         }
 
-
     @staticmethod
     def updateToken():
         """ Update d'un token en fin de vie """
@@ -72,6 +51,11 @@ class iDiamant():
             sleep(attente)
             response = requests.post(url, data)
 
+        jsonStatus = json.loads(response.text)
+        iDiamant.access_token = jsonStatus['access_token']
+        iDiamant.refresh_token = jsonStatus['refresh_token']
+        iDiamant.expire_token = int(jsonStatus['expires_in'])
+
     @staticmethod
     def publish(topic, playload, retain=True):
         """ Publication des messages MQTT """
@@ -83,8 +67,8 @@ class iDiamant():
         client.disconnect()
 
     @staticmethod
-    def initDiscovery():
-        """ Publication des config pour discovery """
+    def initMqtt():
+        """ Publication des config sur Mqtt """
         for volet in iDiamant.volets:
             topic = Constantes.mqttTopic + "/cover/" + volet + "/config"
             payload = '{'

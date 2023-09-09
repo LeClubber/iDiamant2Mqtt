@@ -14,6 +14,13 @@ Cliquer ensuite sur "Create" et renseiger les champs suivants :
 Cliquer sur "I agree to the terms and conditions" et sur Save.
 Dans la partie "App Technical Parameters", conserver les identifiants "client ID" et "client secret" pour le déploiement.
 
+Il faut ensuite générer un token en allant dans la dernière partie "Token generator" :
+- Dans "Choose scopes" sélectionner :
+  - read_bubendorff
+  - write_bubendorff
+- Cliquer sur "Generate Token"
+- Noter les champs "Access Token" et "Refresh Token" pour le déploiement
+
 
 ## Déploiement
 
@@ -36,10 +43,10 @@ Le service peut être démarré grâce à la commande suivante :
 
 ``` sh
 docker run -d --name idiamant \
-    -e IDIAMANT_USER=test@test.com \
-    -e IDIAMANT_PASSWORD=password \
     -e IDIAMANT_CLIENT_ID=abcde \
     -e IDIAMANT_CLIENT_SECRET=abcdefgh \
+    -e IDIAMANT_ACCESS_TOKEN=accesstokennetatmo \
+    -e IDIAMANT_REFRESH_TOKEN=refreshtokennetatmo \
     leclubber/idiamant2mqtt
 ```
 
@@ -57,10 +64,10 @@ services:
       - MQTT_PORT=1883
       - MQTT_HOST=mqtt
       - MQTT_TOPIC=homeassistant
-      - IDIAMANT_USER=<votre email>
-      - IDIAMANT_PASSWORD=<votre mot de passe>
       - IDIAMANT_CLIENT_ID=<client ID généré>
       - IDIAMANT_CLIENT_SECRET=<client secret généré>
+      - IDIAMANT_ACCESS_TOKEN=<access token généré>
+      - IDIAMANT_REFRESH_TOKEN=<refresh token généré>
 ```
 
 Certaines variables d'environnement sont optionnelles, elles possèdent une valeur par défaut. Toutes les variables d'environnement sont les suivantes :
@@ -70,10 +77,10 @@ Certaines variables d'environnement sont optionnelles, elles possèdent une vale
 - MQTT_TOPIC (homeassistant par défaut)
 - MQTT_USER (vide par défaut)
 - MQTT_PASSWORD (vide par défaut)
-- IDIAMANT_USER (aucun par défaut)
-- IDIAMANT_PASSWORD (aucun par défaut)
 - IDIAMANT_CLIENT_ID (aucun par défaut)
 - IDIAMANT_CLIENT_SECRET (aucun par défaut)
+- IDIAMANT_ACCESS_TOKEN (aucun par défaut)
+- IDIAMANT_REFRESH_TOKEN (aucun par défaut)
 
 Un fichier [docker-compose.yml](docker-compose.yml) est disponible pour exemple, avec toutes les variables d'environnement ainsi que les services homeassistant et mqtt.
 

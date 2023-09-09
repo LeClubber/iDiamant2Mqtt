@@ -12,7 +12,8 @@ class Constantes():
     mqttTopic = os.getenv('MQTT_TOPIC', "homeassistant")
     mqttUser = os.getenv('MQTT_USER')
     mqttPassword = os.getenv('MQTT_PASSWORD')
-    idiamantUser = os.getenv("IDIAMANT_USER")
-    idiamantPassword = os.getenv("IDIAMANT_PASSWORD")
     idiamantClientId = os.getenv("IDIAMANT_CLIENT_ID")
     idiamantClientSecret = os.getenv("IDIAMANT_CLIENT_SECRET")
+    idiamantAccessToken = os.getenv("IDIAMANT_ACCESS_TOKEN")
+    idiamantRefreshToken = os.getenv("IDIAMANT_REFRESH_TOKEN")
+    idiamantExpireToken = 60

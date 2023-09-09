@@ -7,8 +7,8 @@ from idiamant import iDiamant
 from mqtt2idiamant import Mqtt2iDiamant
 from time import sleep
 
-iDiamant.getToken()
 iDiamant.initDiscovery()
+iDiamant.initMqtt()
 
 # Envoie des ordres à iDiamant
 mqtt2idiamant = Mqtt2iDiamant()
