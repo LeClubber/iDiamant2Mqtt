@@ -28,7 +28,7 @@ class iDiamant():
                 home_id = home['id']
                 modules = home['modules']
                 for module in modules:
-                    if "NBR" == module['type']:
+                    if "NBR" == module['type'] or "NBO" == module['type']:
                         iDiamant.volets[module['id']] = {
                             'name':module['name'],
                             'bridge':module['bridge'],
